@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { reloadNuxtApp } from "nuxt/app";
 
 const formData = ref({
   title: "",
@@ -21,6 +22,7 @@ const submitForm = async () => {
       },
     }
   );
+  reloadNuxtApp();
 };
 </script>
 
