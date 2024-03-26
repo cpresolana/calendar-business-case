@@ -30,6 +30,7 @@ const submitForm = async () => {
       <div>
         <label for="title">title</label>
         <input
+          required
           type="text"
           v-model="formData.title"
           id="title"
@@ -40,6 +41,7 @@ const submitForm = async () => {
       <div>
         <label for="start">start</label>
         <input
+          required
           type="datetime-local"
           v-model="formData.start"
           id="start"
@@ -50,6 +52,7 @@ const submitForm = async () => {
       <div>
         <label for="end">end</label>
         <input
+          required
           type="datetime-local"
           v-model="formData.end"
           id="end"

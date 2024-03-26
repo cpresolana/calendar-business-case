@@ -60,12 +60,13 @@ const formData = ref({
   end: "",
 });
 
-const submitForm = async () => {
+const submitForm = async (id) => {
   const { data: responseData } = await useFetch(
     "http://localhost:3000/api/events",
     {
       method: "patch",
       body: {
+        id: id,
         title: formData.value.title,
         start: formData.value.start.replace("T", " "),
         end: formData.value.end.replace("T", " "),
@@ -81,30 +82,32 @@ const submitForm = async () => {
     <ClientOnly>
       <ScheduleXCalendar :calendar-app="calendarApp">
         <template #eventModal="{ calendarEvent }">
-          <form @submit.prevent="submitForm">
+          <div>{{ calendarEvent.title }}</div>
+          <form @submit.prevent="submitForm(calendarEvent.id)">
             <div>
               <label for="title">title</label>
               <input
+                required
                 type="text"
                 v-model="formData.title"
                 id="title"
                 placeholder="Event Name"
               />
             </div>
-
             <div>
               <label for="start">start</label>
               <input
+                required
                 type="datetime-local"
                 v-model="formData.start"
                 id="start"
                 placeholder="2023-12-20 12:00"
               />
             </div>
-
             <div>
               <label for="end">end</label>
               <input
+                required
                 type="datetime-local"
                 v-model="formData.end"
                 id="end"

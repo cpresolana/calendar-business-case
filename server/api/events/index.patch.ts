@@ -3,8 +3,9 @@ import { Event } from "../../../models/event"
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
+    console.log(body)
     try {
-        await Event.updateOne(body);
+        await Event.findOneAndUpdate({ id: body.id }, body);
         return { message: 'Event Deleted' };
     } catch (e: any) {
         throw createError({
