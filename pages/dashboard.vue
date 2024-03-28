@@ -10,9 +10,9 @@ const formData = ref({
 
 const submitForm = async () => {
   const id = Date.now();
-  const { data: responseData } = await useFetch(
-    "http://localhost:3000/api/events",
-    {
+
+  try {
+    const response = await useFetch("http://localhost:3000/api/events", {
       method: "post",
       body: {
         id: id,
@@ -20,9 +20,22 @@ const submitForm = async () => {
         start: formData.value.start.replace("T", " "),
         end: formData.value.end.replace("T", " "),
       },
+    });
+    if (response?.status?._value === "success") {
+      window.alert("Evento Creato");
+    } else {
+      if (response?.error?.value.statusCode === 404) {
+        window.alert("Error " + response.error.value.data.message);
+        console.error("404, Not found");
+      }
+      if (response?.error?.value?.statusCode === 500) {
+        window.alert("Error " + response.error.value.data.message);
+        console.error("500, internal server error");
+      }
     }
-  );
-  reloadNuxtApp();
+  } catch (error) {
+    console.error("Fetch", error);
+  }
 };
 </script>
 

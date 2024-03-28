@@ -21,16 +21,13 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        await Event.create(body);
-        return {
-            message: 'Evento Creato',
-            statusCode: 200,
-        };
+        await Event.replaceOne({ id: body.id }, body, { runValidators: true });
+        return { message: 'Evento Modificato' };
     } catch (e: any) {
         throw createError({
             message: e.message
         });
     }
 
-})
 
+})

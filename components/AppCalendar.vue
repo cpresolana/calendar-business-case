@@ -61,19 +61,31 @@ const formData = ref({
 });
 
 const submitForm = async (id) => {
-  const { data: responseData } = await useFetch(
-    "http://localhost:3000/api/events",
-    {
-      method: "patch",
+  try {
+    const response = await useFetch("http://localhost:3000/api/events", {
+      method: "put",
       body: {
         id: id,
         title: formData.value.title,
         start: formData.value.start.replace("T", " "),
         end: formData.value.end.replace("T", " "),
       },
+    });
+    if (response?.status?._value === "success") {
+      window.alert("Evento Modificato");
+    } else {
+      if (response?.error?.value.statusCode === 404) {
+        window.alert("Error " + response.error.value.data.message);
+        console.error("404, Not found");
+      }
+      if (response?.error?.value?.statusCode === 500) {
+        window.alert("Error " + response.error.value.data.message);
+        console.error("500, internal server error");
+      }
     }
-  );
-  reloadNuxtApp();
+  } catch (error) {
+    console.error("Fetch", error);
+  }
 };
 </script>
 
